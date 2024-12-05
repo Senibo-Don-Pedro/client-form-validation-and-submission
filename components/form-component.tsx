@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
 import { submitFormAction } from "@/actions/submit-form"
-import { formSchema } from "@/actions"
+import { formSchema } from "@/actions/form-schemas" 
 
 
 export function ProfileForm() {
