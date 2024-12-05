@@ -15,15 +15,9 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
+import { submitFormAction } from "@/actions/submit-form"
+import { formSchema } from "@/actions"
 
-const formSchema = z.object({
-    username: z.string().min(2, {
-      message: "Username must be at least 2 characters.",
-    }),
-    password: z.string().min(2, {
-      message: "Username must be at least 2 characters.",
-    }),
-})
 
 export function ProfileForm() {
     // 1. Define your form.
@@ -37,10 +31,17 @@ export function ProfileForm() {
    
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      //fake loading
+      // await new Promise((resolve) => setTimeout(resolve, 2000))
       // Do something with the form values.
       // ✅ This will be type-safe and validated.
-      console.log(values)
+
+      //append to formData
+      const formData = new FormData()
+      formData.append("username",values.username)
+      formData.append("password",values.password)
+
+      console.log(await submitFormAction(formData))
     }
 
     const {isSubmitting} = form.formState
@@ -67,7 +68,7 @@ export function ProfileForm() {
                       name="password"
                       render={({ field }) => (
                           <FormItem>
-                              <FormLabel>Username</FormLabel>
+                              <FormLabel>Password</FormLabel>
                               <FormControl>
                                   <Input placeholder="Input your password" {...field} />
                               </FormControl>
@@ -75,7 +76,7 @@ export function ProfileForm() {
                           </FormItem>
                       )}
                   />
-                  <Button type="submit" disabled={isSubmitting}>
+                  <Button type="submit" disabled={isSubmitting} className="w-full">
                     {isSubmitting ?
                       <div className="flex justify-center items-center gap-2">
                         <Loader2 className="animate-spin" />
